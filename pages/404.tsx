@@ -1,6 +1,7 @@
 // Description: Homepage - /
 
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
@@ -22,6 +23,16 @@ export default function Home() {
           <p>
             Surtout ne paniquez pas, et laissez-vous guider via ce trou de ver :
           </p>
+        </div>
+
+        <div className={styles.center}>
+          <Image
+            className={styles.background}
+            src="/img/home.webp"
+            alt="L'espace depuis la terre."
+            fill={true}
+            priority
+          />
         </div>
 
         <div className={styles.flex}>

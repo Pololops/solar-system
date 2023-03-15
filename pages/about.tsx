@@ -2,10 +2,7 @@
 
 import Head from 'next/head';
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function About() {
   return (
@@ -19,9 +16,20 @@ export default function About() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className={styles.main}>
         <div className={styles.description}>
           <h1>A propos de notre système solaire</h1>
+        </div>
+
+        <div className={styles.center}>
+          <Image
+            className={styles.background}
+            src="/img/home.webp"
+            alt="L'espace depuis la terre."
+            fill={true}
+            priority
+          />
         </div>
 
         <div className={styles.description}>

@@ -27,11 +27,10 @@ export default function Home() {
 
         <div className={styles.center}>
           <Image
-            className={styles.logo}
-            src="/favicon.ico"
-            alt="La planète Mars"
-            width={256}
-            height={256}
+            className={styles.background}
+            src="/img/home.webp"
+            alt="L'espace depuis la terre."
+            fill={true}
             priority
           />
         </div>
@@ -46,7 +45,7 @@ export default function Home() {
             </p>
           </Link>
 
-          <Link href="/body" className={styles.card}>
+          <Link href="/bodies" className={styles.card}>
             <h2 className={inter.className}>
               Les objets <span>-&gt;</span>
             </h2>

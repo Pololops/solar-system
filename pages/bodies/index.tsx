@@ -1,9 +1,12 @@
 // Description: all bodies in the solar system - /bodies
 
 import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import styles from '@/styles/Home.module.css';
 
 import { loadBodies } from '@/lib/loadData';
+import formatName from '@/lib/formatName';
 
 import CardBody from '@/components/CardBody';
 
@@ -12,6 +15,8 @@ type PropsType = {
 };
 
 export default ({ bodies }: PropsType) => {
+  const { asPath } = useRouter();
+
   return (
     <>
       <Head>
@@ -32,13 +37,23 @@ export default ({ bodies }: PropsType) => {
           {bodies.map((body) => (
             <CardBody
               key={body.id}
-              title={body.name}
-              link={`/body/${body.id}`}
+              title={formatName(body.name)}
+              link={`${asPath}/${body.id}`}
               image="/favicon.ico"
               alt={body.name}
               description={body.englishName}
             />
           ))}
+        </div>
+
+        <div className={styles.center}>
+          <Image
+            className={styles.background}
+            src="/img/home.webp"
+            alt="L'espace depuis la terre."
+            fill={true}
+            priority
+          />
         </div>
       </main>
     </>
