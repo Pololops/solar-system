@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Notre Système Solaire</title>
+        <title>Le Système Solaire</title>
         <meta
           name="description"
           content="Quels sont les différents objets célestes qui composent notre système solaire"
@@ -46,7 +46,7 @@ export default function Home() {
             </p>
           </Link>
 
-          <Link href="/bodies" className={styles.card}>
+          <Link href="/body" className={styles.card}>
             <h2 className={inter.className}>
               Les objets <span>-&gt;</span>
             </h2>

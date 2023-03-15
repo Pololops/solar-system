@@ -3,61 +3,51 @@
 const allBodiesUrl = `https://api.le-systeme-solaire.net/rest/bodies/`;
 const oneBodyUrl = (id: string) => `https://api.le-systeme-solaire.net/rest/bodies/${id}`;
 
-export type BodyType = {
-  id: String;
-  name: String;
-  englishName: String;
-  isPlanet: true;
-  moons: Array<{
-    moon: String,
-    rel: String
-  }>;
-  semimajorAxis: Number;
-  perihelion: Number;
-  aphelion: Number;
-  eccentricity: Number;
-  inclination: Number;
-  mass: Array<{
-    massValue: Number;
-    massExponent: Number;
-  }>;
-  vol: Array<{
-    volValue: Number;
-    volExponent: Number;
-  }>;
-  density: Number;
-  gravity: Number;
-  escape: Number;
-  meanRadius: Number;
-  equaRadius: Number;
-  polarRadius: Number;
-  flattening: Number;
-  dimension: String;
-  sideralOrbit: Number;
-  sideralRotation: Number;
-  aroundPlanet: {
-    planet: String;
-    rel: String;
-  };
-  discoveredBy: String;
-  discoveryDate: String;
-  alternativeName: String;
-  axialTilt: Number;
-  avgTemp: Number;
-  mainAnomaly: Number;
-  argPeriapsis: Number;
-  longAscNode: Number;
-  bodyType: String;
-  rel: String;
+const parseParams = (params: LoadBodiesParams): string => {
+  let paramsString = '?';
+  const useAmpersand = () => (paramsString !== '?') ? '&' : '';
+
+  if (params.data) {
+    paramsString += `${useAmpersand()}data=${params.data.join(',')}`;
+  }
+
+  if (params.exclude) {
+    paramsString += `${useAmpersand()}exclude=${params.exclude.join(',')}`;
+  }
+
+  if (params.order) {
+    paramsString += `${useAmpersand()}order=${params.order.join(',')}`;
+  }
+
+  if (params.page) {
+    paramsString += `${useAmpersand()}page=${params.page.join(',')}`;
+  }
+
+  if (params.rowData) {
+    paramsString += `${useAmpersand()}rowData=${params.rowData}`;
+  }
+
+  if (params.filter) {
+    paramsString += `${useAmpersand()}filter[]=${params.filter.map((filter) => filter.join(',')).join(';')}`;
+  }
+
+  if (params.satisfy) {
+    paramsString += `${useAmpersand()}satisfy=${params.satisfy}`;
+  }
+
+  return paramsString;
 };
 
-export const loadBodies = async () => {
-  const response = await fetch(allBodiesUrl);
+export const loadBodies = async (params?: LoadBodiesParams) => {
+  const queryString = params ? parseParams(params) : '';
+  const url = `${allBodiesUrl}${queryString}`;
+
+  const response = await fetch(url);
   const data = await response.json() as { bodies: BodyType[] } | undefined;
   return data?.bodies;
 }
 
-export const loadBodyById = async (id: string) => {
+export const loadOneBody = async (id: string) => {
   const response = await fetch(oneBodyUrl(id));
   const data = await response.json() as BodyType | undefined;
   return data;

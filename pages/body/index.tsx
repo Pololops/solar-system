@@ -1,18 +1,11 @@
 // Description: all bodies in the solar system - /bodies
 
 import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 
 import { loadBodies } from '@/lib/loadData';
-import type { BodyType } from '@/lib/loadData';
 
 import CardBody from '@/components/CardBody';
-import { Key } from 'react';
-
-const inter = Inter({ subsets: ['latin'] });
 
 type PropsType = {
   bodies: BodyType[];
@@ -22,7 +15,7 @@ export default ({ bodies }: PropsType) => {
   return (
     <>
       <Head>
-        <title>Les objets célestes de notre système solaire</title>
+        <title>Le Système Solaire - les objects</title>
         <meta
           name="description"
           content="Tous les objets célestes qui composent notre système solaire"
@@ -40,7 +33,7 @@ export default ({ bodies }: PropsType) => {
             <CardBody
               key={body.id}
               title={body.name}
-              link={`/bodies/${body.id}`}
+              link={`/body/${body.id}`}
               image="/favicon.ico"
               alt={body.name}
               description={body.englishName}
@@ -53,7 +46,12 @@ export default ({ bodies }: PropsType) => {
 };
 
 export async function getStaticProps() {
-  const bodies = await loadBodies();
+  const bodies = await loadBodies({
+    filter: [
+      ['bodyType', 'cs', 'Planet'],
+    ],
+    order: ['sideralOrbit', 'asc'],
+  });
 
   return {
     props: { bodies },
