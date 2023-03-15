@@ -38,17 +38,28 @@ const parseParams = (params: LoadBodiesParams): string => {
   return paramsString;
 };
 
-export const loadBodies = async (params?: LoadBodiesParams) => {
+export const loadBodies = async (params?: LoadBodiesParams): Promise<BodyType[]> => {
   const queryString = params ? parseParams(params) : '';
   const url = `${allBodiesUrl}${queryString}`;
 
   const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from API, received status ${response.status}`)
+  }
+
   const data = await response.json() as { bodies: BodyType[] } | undefined;
-  return data?.bodies;
+  if (!data || !('bodies' in data)) {
+    throw new Error(`Invalid data structures received from API`)
+  }
+
+  return data.bodies;
 }
 
-export const loadOneBody = async (id: string) => {
+export const loadOneBody = async (id: string): Promise<BodyType | undefined>  => {
   const response = await fetch(oneBodyUrl(id));
-  const data = await response.json() as BodyType | undefined;
-  return data;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from API, received status ${response.status}`)
+  }
+
+  return await response.json();
 }
