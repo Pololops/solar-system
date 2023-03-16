@@ -4,8 +4,8 @@ import type { GetStaticProps } from 'next/types';
 
 import { useRouter } from 'next/router';
 
-import { HeadDocument, MainDocument, FlexBox } from '@/layout';
-import { Card, Paragraph } from '@/components';
+import { HeadDocument, MainDocument } from '@/layout';
+import { Card } from '@/components';
 
 import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
@@ -25,9 +25,9 @@ export default function Bodies({ bodies }: PropsType) {
       />
 
       <MainDocument title="Les objets célestes de notre système solaire">
-        <FlexBox>
+        <div className="flex">
           {typeof bodies === 'string' ? (
-            <Paragraph>{bodies}</Paragraph>
+            <p>{bodies}</p>
           ) : (
             bodies.map((body) => (
               <Card
@@ -40,7 +40,7 @@ export default function Bodies({ bodies }: PropsType) {
               />
             ))
           )}
-        </FlexBox>
+        </div>
       </MainDocument>
     </>
   );

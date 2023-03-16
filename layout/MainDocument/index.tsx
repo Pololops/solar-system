@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import styles from './styles.module.css';
-import { DescriptionBox, CenterBox } from '@/layout';
 
 type Props = {
   title: string;
@@ -10,13 +9,13 @@ type Props = {
 export default function MainDocument({ title, children }: Props) {
   return (
     <main className={styles.main}>
-      <DescriptionBox>
+      <div className="description">
         <h1>{title}</h1>
-      </DescriptionBox>
+      </div>
 
       {children}
 
-      <CenterBox>
+      <div className="center">
         <Image
           className={styles.background}
           src="/img/home.webp"
@@ -24,7 +23,7 @@ export default function MainDocument({ title, children }: Props) {
           fill={true}
           priority
         />
-      </CenterBox>
+      </div>
     </main>
   );
 }

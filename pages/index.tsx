@@ -1,6 +1,6 @@
 // Description: Homepage - /
 
-import { HeadDocument, MainDocument, FlexBox, CenterBox } from '@/layout';
+import { HeadDocument, MainDocument } from '@/layout';
 import { Card } from '@/components';
 
 export default function Home() {
@@ -12,8 +12,8 @@ export default function Home() {
       />
 
       <MainDocument title="Notre Système Solaire">
-        <CenterBox />
-        <FlexBox>
+        <div className="center" />
+        <div className="flex">
           <Card
             cardURL="/about"
             cardTitle="A propos"
@@ -24,7 +24,7 @@ export default function Home() {
             cardTitle="Les objets"
             cardLegend="Les objets de notre système solaire."
           />
-        </FlexBox>
+        </div>
       </MainDocument>
     </>
   );

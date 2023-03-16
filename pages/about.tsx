@@ -1,8 +1,6 @@
 // Description: About page - /about
 
-import { HeadDocument, MainDocument, DescriptionBox } from '@/layout';
-import { Paragraph } from '@/components';
-import CenterBox from '../layout/CenterBox/index';
+import { HeadDocument, MainDocument } from '@/layout';
 
 export default function About() {
   return (
@@ -13,21 +11,21 @@ export default function About() {
       />
 
       <MainDocument title="A propos">
-        <CenterBox />
-        <DescriptionBox>
-          <Paragraph>
+        <div className="center" />
+        <div className="description">
+          <p>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est
             molestiae veniam cum facere? Aut excepturi maiores ipsa suscipit
             placeat similique esse alias corporis dolor ab natus harum ratione,
             unde quos.
-          </Paragraph>
-          <Paragraph>
+          </p>
+          <p>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam esse
             iure fugit quasi praesentium doloremque quod nostrum illum rerum
             dolorum laborum, eum amet consectetur culpa dolore accusamus
             consequuntur iste tempore.
-          </Paragraph>
-        </DescriptionBox>
+          </p>
+        </div>
       </MainDocument>
     </>
   );

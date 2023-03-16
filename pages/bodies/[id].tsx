@@ -3,8 +3,7 @@
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next/types';
 
-import { HeadDocument, MainDocument, DescriptionBox } from '@/layout';
-import { Paragraph } from '@/components';
+import { HeadDocument, MainDocument } from '@/layout';
 
 import { loadBodies, loadOneBody } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
@@ -68,30 +67,22 @@ export default function Body({ body }: PropsType) {
 
       <MainDocument title={bodyName || 'Erreur interne'}>
         {typeof body === 'string' ? (
-          <Paragraph>{body}</Paragraph>
+          <p>{body}</p>
         ) : (
-          <DescriptionBox>
-            {body.bodyType && <Paragraph>Type : {getType()}</Paragraph>}
-            {body.isPlanet && <Paragraph>Satellite(s) : {getMoons}</Paragraph>}
+          <div className="description">
+            {body.bodyType && <p>Type : {getType()}</p>}
+            {body.isPlanet && <p>Satellite(s) : {getMoons}</p>}
             {body.bodyType === 'Moon' && (
-              <Paragraph>Planète proche : {body.aroundPlanet.planet}</Paragraph>
+              <p>Planète proche : {body.aroundPlanet.planet}</p>
             )}
-            {body.density && (
-              <Paragraph>{`Densité : ${body.density}`}</Paragraph>
-            )}
-            {body.gravity && (
-              <Paragraph>{`Gravité : ${body.gravity}`}</Paragraph>
-            )}
-            {body.dimension !== '' && (
-              <Paragraph>{`Dimension : ${body.dimension}`}</Paragraph>
-            )}
+            {body.density && <p>{`Densité : ${body.density}`}</p>}
+            {body.gravity && <p>{`Gravité : ${body.gravity}`}</p>}
+            {body.dimension !== '' && <p>{`Dimension : ${body.dimension}`}</p>}
             {getDiscoveryDate !== null && (
-              <Paragraph>{`Découvert le : ${getDiscoveryDate()}`}</Paragraph>
+              <p>{`Découvert le : ${getDiscoveryDate()}`}</p>
             )}
-            {body.discoveredBy && (
-              <Paragraph>Découvert par : {body.discoveredBy}</Paragraph>
-            )}
-          </DescriptionBox>
+            {body.discoveredBy && <p>Découvert par : {body.discoveredBy}</p>}
+          </div>
         )}
       </MainDocument>
     </>
