@@ -1,67 +1,50 @@
 // Description: all bodies in the solar system - /bodies
 
-import Head from 'next/head';
-import Image from 'next/image';
+import type { GetStaticProps } from 'next/types';
+
 import { useRouter } from 'next/router';
-import styles from '@/styles/Home.module.css';
+
+import { HeadDocument, MainDocument, FlexBox } from '@/layout';
+import { Card, Paragraph } from '@/components';
 
 import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
 
-import CardBody from '@/components/CardBody';
-import type { GetStaticProps } from 'next/types';
-
 interface PropsType {
   bodies: BodyType[] | string;
-};
+}
 
-export default ({ bodies }: PropsType) => {
+export default function Bodies({ bodies }: PropsType) {
   const { asPath } = useRouter();
 
   return (
     <>
-      <Head>
-        <title>Le Système Solaire - les objects</title>
-        <meta
-          name="description"
-          content="Tous les objets célestes qui composent notre système solaire"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1>Les objets célestes de notre système solaire</h1>
-        </div>
+      <HeadDocument
+        titlePage="Les objets du Système Solaire"
+        descriptionPage="Tous les objets célestes qui composent notre système solaire"
+      />
 
-        <div className={styles.flex}>
-          {typeof bodies === 'string'
-            ? <p className={styles.code}>{bodies}</p>
-            : bodies.map((body) => (
-                <CardBody
-                  key={body.id}
-                  title={formatName(body.name)}
-                  link={`${asPath}/${body.id}`}
-                  image="/favicon.ico"
-                  alt={body.name}
-                  description={body.englishName}
-                />
-              ))}
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.background}
-            src="/img/home.webp"
-            alt="L'espace depuis la terre."
-            fill={true}
-            priority
-          />
-        </div>
-      </main>
+      <MainDocument title="Les objets célestes de notre système solaire">
+        <FlexBox>
+          {typeof bodies === 'string' ? (
+            <Paragraph>{bodies}</Paragraph>
+          ) : (
+            bodies.map((body) => (
+              <Card
+                key={body.id}
+                cardURL={`${asPath}/${body.id}`}
+                cardTitle={formatName(body.name)}
+                cardLegend={body.englishName}
+                cardImage="/favicon.ico"
+                CardImageAlt={body.name}
+              />
+            ))
+          )}
+        </FlexBox>
+      </MainDocument>
     </>
   );
-};
+}
 
 export const getStaticProps: GetStaticProps<PropsType> = async () => {
   const bodies = await loadBodies({
