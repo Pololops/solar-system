@@ -3,9 +3,8 @@
 import type { ParsedUrlQuery } from 'querystring';
 import type { GetStaticPaths, GetStaticProps } from 'next/types';
 
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '@/styles/Home.module.css';
+import { HeadDocument, MainDocument, DescriptionBox } from '@/layout';
+import { Paragraph } from '@/components';
 
 import { loadBodies, loadOneBody } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
@@ -18,7 +17,7 @@ interface ParamsType extends ParsedUrlQuery {
   id: string;
 }
 
-const Body = ({ body }: PropsType) => {
+export default function Body({ body }: PropsType) {
   const bodyName = typeof body !== 'string' && formatName(body.name);
 
   const getType = () => {
@@ -41,9 +40,10 @@ const Body = ({ body }: PropsType) => {
     }
   };
 
-  const getMoons = typeof body !== 'string' && body.moons
-    ? body.moons.map(({ moon }) => moon).join(', ')
-    : ' Aucun';
+  const getMoons =
+    typeof body !== 'string' && body.moons
+      ? body.moons.map(({ moon }) => moon).join(', ')
+      : ' Aucun';
 
   const getDiscoveryDate = () => {
     const date = typeof body !== 'string' && body.discoveryDate;
@@ -61,71 +61,42 @@ const Body = ({ body }: PropsType) => {
 
   return (
     <>
-      <Head>
-        <title>Le Système Solaire - {bodyName}</title>
-        <meta
-          name="description"
-          content={`${bodyName} : tous les détails de cet objet céleste situé dans notre système solaire`}
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1>{bodyName || 'Internal Erreur'}</h1>
-        </div>
+      <HeadDocument
+        titlePage={`Le Système Solaire - ${bodyName}`}
+        descriptionPage={`${bodyName} : tous les détails de cet objet céleste situé dans notre système solaire`}
+      />
 
+      <MainDocument title={bodyName || 'Erreur interne'}>
         {typeof body === 'string' ? (
-          <p className={styles.code}>{body}</p>
+          <Paragraph>{body}</Paragraph>
         ) : (
-          <>
-            <div className={styles.description}>
-              {body.bodyType && <p className={styles.code}>Type : {getType()}</p>}
-              {body.isPlanet && (
-                <p className={styles.code}>Satellite(s) : {getMoons}</p>
-              )}
-              {body.bodyType === 'Moon' && (
-                <p className={styles.code}>
-                  Planète proche : {body.aroundPlanet.planet}
-                </p>
-              )}
-              {body.density && (
-                <p className={styles.code}>{`Densité : ${body.density}`}</p>
-              )}
-              {body.gravity && (
-                <p className={styles.code}>{`Gravité : ${body.gravity}`}</p>
-              )}
-              {body.dimension !== '' && (
-                <p className={styles.code}>{`Dimension : ${body.dimension}`}</p>
-              )}
-              {getDiscoveryDate !== null && (
-                <p
-                  className={styles.code}
-                >{`Découvert le : ${getDiscoveryDate()}`}</p>
-              )}
-              {body.discoveredBy && (
-                <p className={styles.code}>
-                  Découvert par : {body.discoveredBy}
-                </p>
-              )}
-            </div>
-          </>
+          <DescriptionBox>
+            {body.bodyType && <Paragraph>Type : {getType()}</Paragraph>}
+            {body.isPlanet && <Paragraph>Satellite(s) : {getMoons}</Paragraph>}
+            {body.bodyType === 'Moon' && (
+              <Paragraph>Planète proche : {body.aroundPlanet.planet}</Paragraph>
+            )}
+            {body.density && (
+              <Paragraph>{`Densité : ${body.density}`}</Paragraph>
+            )}
+            {body.gravity && (
+              <Paragraph>{`Gravité : ${body.gravity}`}</Paragraph>
+            )}
+            {body.dimension !== '' && (
+              <Paragraph>{`Dimension : ${body.dimension}`}</Paragraph>
+            )}
+            {getDiscoveryDate !== null && (
+              <Paragraph>{`Découvert le : ${getDiscoveryDate()}`}</Paragraph>
+            )}
+            {body.discoveredBy && (
+              <Paragraph>Découvert par : {body.discoveredBy}</Paragraph>
+            )}
+          </DescriptionBox>
         )}
-
-        <div className={styles.center}>
-          <Image
-            className={styles.background}
-            src="/img/home.webp"
-            alt="L'espace depuis la terre."
-            fill={true}
-            priority
-          />
-        </div>
-      </main>
+      </MainDocument>
     </>
   );
-};
-export default Body;
+}
 
 export const getStaticPaths: GetStaticPaths<ParamsType> = async () => {
   const bodies = await loadBodies();
