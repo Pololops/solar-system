@@ -9,9 +9,10 @@ import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
 
 import CardBody from '@/components/CardBody';
+import type { GetStaticProps } from 'next/types';
 
-type PropsType = {
-  bodies: BodyType[];
+interface PropsType {
+  bodies: BodyType[] | string;
 };
 
 export default ({ bodies }: PropsType) => {
@@ -34,16 +35,18 @@ export default ({ bodies }: PropsType) => {
         </div>
 
         <div className={styles.flex}>
-          {bodies.map((body) => (
-            <CardBody
-              key={body.id}
-              title={formatName(body.name)}
-              link={`${asPath}/${body.id}`}
-              image="/favicon.ico"
-              alt={body.name}
-              description={body.englishName}
-            />
-          ))}
+          {typeof bodies === 'string'
+            ? <p className={styles.code}>{bodies}</p>
+            : bodies.map((body) => (
+                <CardBody
+                  key={body.id}
+                  title={formatName(body.name)}
+                  link={`${asPath}/${body.id}`}
+                  image="/favicon.ico"
+                  alt={body.name}
+                  description={body.englishName}
+                />
+              ))}
         </div>
 
         <div className={styles.center}>
@@ -60,16 +63,16 @@ export default ({ bodies }: PropsType) => {
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<PropsType> = async () => {
   const bodies = await loadBodies({
-    filter: [
-      ['bodyType', 'cs', 'Planet'],
-    ],
+    filter: [['bodyType', 'cs', 'Planet']],
     order: ['sideralOrbit', 'asc'],
   });
+
+  if (!bodies) return { notFound: true };
 
   return {
     props: { bodies },
     revalidate: 7 * 24 * 60 * 60, // refresh data every 7 days
   };
-}
+};

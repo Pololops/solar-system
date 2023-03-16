@@ -19,20 +19,15 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.description}>
           <h1>Erreur 404</h1>
-          <p>Le système solaire est vaste et on s'y perd facilement.</p>
-          <p>
-            Surtout ne paniquez pas, et laissez-vous guider via ce trou de ver :
-          </p>
         </div>
 
-        <div className={styles.center}>
-          <Image
-            className={styles.background}
-            src="/img/home.webp"
-            alt="L'espace depuis la terre."
-            fill={true}
-            priority
-          />
+        <div className={styles.flex}>
+          <p className={styles.code}>
+            Le système solaire est vaste et on s'y perd facilement.
+          </p>
+          <p className={styles.code}>
+            Surtout ne paniquez pas, et laissez-vous glisser dans ce trou de ver :
+          </p>
         </div>
 
         <div className={styles.flex}>
@@ -44,6 +39,16 @@ export default function Home() {
               Un raccourci dans l'espace-temps pour retrouvez votre chemin.
             </p>
           </Link>
+        </div>
+
+        <div className={styles.center}>
+          <Image
+            className={styles.background}
+            src="/img/home.webp"
+            alt="L'espace depuis la terre."
+            fill={true}
+            priority
+          />
         </div>
       </main>
     </>
