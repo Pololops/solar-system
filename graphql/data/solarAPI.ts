@@ -17,26 +17,51 @@ class SolarAPI extends RESTDataSource {
   //   }
   // }
 
-  async getAll(type: any): Promise<BodyType[]> {
+  async getAll(type: string): Promise<BodyType[]> {
     const params = type ? { filter: `bodyType,cs,${type}` } : {};
     const data = await this.get('/rest/bodies', {
       params,
-    });
-    return data.bodies;
+    }) as { bodies: BodyType[] };
+
+    return data.bodies.map((body) => this.formatBody(body));
   }
 
   async getOne(id: string): Promise<BodyType> {
-    return this.get(`/rest/bodies/${encodeURIComponent(id)}`);
+    const body = await this.get(`/rest/bodies/${encodeURIComponent(id)}`);
+
+    return this.formatBody(body);
   }
 
-  // async findAll(arg: any): Promise<BodyType[]> {
-  //   const data = await this.get('/rest/bodies', {
-  //     params: { filter: `name,cs,${arg.moons[0].moon}` },
-  //   });
+  async findAllByName(names: string[]): Promise<BodyType[]> {
+    const queryFilter = names.map((name) => {
+      return `filter[]=name,cs,${encodeURIComponent(name)}`
+    });
+    const queriesString = queryFilter.join('&') + '&satisfy=any';
 
-  //   return data
-  // }
+    const data = await this.get('/rest/bodies/?' + queriesString) as { bodies: BodyType[] };
 
+    return data.bodies.map((body) => this.formatBody(body));
+  }
+
+  async findOneByName(name: string): Promise<BodyType> {
+    const data = await this.get('/rest/bodies/', {
+      params: {
+        filter: `name,cs,${encodeURIComponent(name)}` }
+    }) as { bodies: BodyType[] };
+
+    return this.formatBody(data.bodies[0]);
+  }
+
+  formatBody(body: BodyType) {
+    return {
+      ...body,
+      name: this.formatName(body.name)!,
+    };
+  }
+
+  formatName(name: string) {
+    return (name && name.includes(') ')) ? name.split(') ').at(-1) : name;
+  }
 }
 
 export default SolarAPI;

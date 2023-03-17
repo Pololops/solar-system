@@ -6,7 +6,7 @@ type BodyType = {
   moons: Array<{
     moon: string,
     rel: string
-  }>;
+  }> | null;
   semimajorAxis: number;
   perihelion: number;
   aphelion: number;
@@ -19,7 +19,7 @@ type BodyType = {
   vol: Array<{
     volValue: number;
     volExponent: number;
-  }>;
+  }> | null;
   density: number;
   gravity: number;
   escape: number;
@@ -33,7 +33,7 @@ type BodyType = {
   aroundPlanet: {
     planet: string;
     rel: string;
-  };
+  } | null;
   discoveredBy: string;
   discoveryDate: string;
   alternativeName: string;

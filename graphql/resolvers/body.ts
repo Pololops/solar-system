@@ -1,7 +1,14 @@
 import { Context } from '@/pages/api';
 
 export default {
-  // moons: async (parent: any, _: any, { dataSources }: Context) => {
-  //   return dataSources.solarAPI.findAll({ moons: parent.moons });
-  // },
+  __resolveType(body: BodyType) {
+    const { moons, aroundPlanet } = body;
+    if (moons) {
+      return 'Planet';
+    }
+    if (aroundPlanet) {
+      return 'Moon';
+    }
+    return null;
+  },
 };
