@@ -3,7 +3,7 @@ const typeDefs = `
   #### Requests
   type Query {
     "List of all objects in the solar system."
-    objects(bodyType: ObjectType): [SolarSystemObject]!
+    objects(bodyType: ObjectType, order: Order): [SolarSystemObject]!
 
     "One object of the solar system."
     object(id: String!): SolarSystemObject
@@ -34,6 +34,11 @@ const typeDefs = `
     Asteroid
     Star
     Comet
+  }
+
+  enum Order {
+    ASC
+    DESC
   }
 `
 

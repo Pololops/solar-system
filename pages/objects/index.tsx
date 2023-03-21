@@ -52,8 +52,8 @@ export const getStaticProps: GetStaticProps<PropsType> = async (context) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
-        query SolarSystemObjects($bodyType: ObjectType) {
-          objects(bodyType: $bodyType) {
+        query SolarSystemObjects($order: Order, $bodyType: ObjectType) {
+          objects(order: $order, bodyType: $bodyType) {
             id
             name
             englishName
@@ -62,6 +62,7 @@ export const getStaticProps: GetStaticProps<PropsType> = async (context) => {
       `,
         variables: {
           bodyType: 'Planet',
+          order: 'ASC'
         },
       }),
     },

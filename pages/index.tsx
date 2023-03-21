@@ -19,6 +19,8 @@ export default function Home() {
             cardTitle="A propos"
             cardLegend="A propos de notre système solaire."
           />
+        </div>
+        <div className="flex">
           <Card
             cardURL="/bodies"
             cardTitle="API REST"

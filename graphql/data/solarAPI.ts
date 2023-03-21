@@ -20,7 +20,7 @@ class SolarAPI extends RESTDataSource {
 
   async findAll(args?: { [key: string]: string[] | string }): Promise<SolarSystemObject[]> {
     const query = !!args ? this.formatFilterQuery(args) : '';
-    const { bodies } = await this.get(this.pathURL + query) as { bodies: SolarSystemObject[] };
+    const { bodies } = await this.get(`${this.pathURL}${query}`) as { bodies: SolarSystemObject[] };
 
     return bodies.map((object) => this.formatObject(object));
   }
@@ -30,38 +30,18 @@ class SolarAPI extends RESTDataSource {
     return this.formatObject(object);
   }
 
-  // async findAllByName(names: string[]): Promise<SolarSystemObject[]> {
-  //   const queryFilter = names.map((name) => {
-  //     return `filter[]=name,cs,${encodeURIComponent(name)}`
-  //   });
-  //   const queriesString = queryFilter.join('&') + '&satisfy=any';
-
-  //   const data = await this.get(this.pathURL + '?' + queriesString) as { objects: SolarSystemObject[] };
-
-  //   return data.objects.map((object) => this.formatObject(object));
-  // }
-
-  // async findOneByName(name: string): Promise<SolarSystemObject> {
-  //   const data = await this.get('/rest/bodies/', {
-  //     params: {
-  //       filter: `name,cs,${encodeURIComponent(name)}`
-  //     }
-  //   }) as { objects: SolarSystemObject[] };
-
-  //   return this.formatObject(data.objects[0]);
-  // }
-
   formatFilterQuery(args: { [key: string]: string[] | string }) {
-    const filter = Object.entries(args).map(([key, values]) => {
-      if (typeof values === 'string') values = [values];
+    const filter = Object.entries(args).map(([key, value]) => {
+      if (key === 'order') return `${key}=sideralOrbit,${value}`;
 
-      return values.map((value) => {
-        if (value === 'DwarfPlanet') value = 'Dwarf Planet';
-        return `filter[]=${key},eq,${encodeURIComponent(value)}`
+      if (typeof value === 'string') value = [value];
+      return value.map((nestedValue) => {
+        if (nestedValue === 'DwarfPlanet') nestedValue = 'Dwarf Planet';
+        return `filter[]=${key},eq,${encodeURIComponent(nestedValue)}`
       }).join('&');
     });
 
-    return `?${filter}&satisfy=any`;
+    return `?${filter.join('&')}&satisfy=any`;
   }
 
   formatObject(object: SolarSystemObject) {
