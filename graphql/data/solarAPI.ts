@@ -19,10 +19,10 @@ class SolarAPI extends RESTDataSource {
   // }
 
   async findAll(args?: { [key: string]: string[] | string }): Promise<SolarSystemObject[]> {
-    const query = args ? this.formatFilterQuery(args) : '';
-    const data = await this.get(this.pathURL + query) as { bodies: SolarSystemObject[] };
+    const query = !!args ? this.formatFilterQuery(args) : '';
+    const { bodies } = await this.get(this.pathURL + query) as { bodies: SolarSystemObject[] };
 
-    return data.bodies.map((object) => this.formatObject(object));
+    return bodies.map((object) => this.formatObject(object));
   }
 
   async findOneById(id: string): Promise<SolarSystemObject> {
