@@ -131,9 +131,6 @@ p {
 }
 
 .description a {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   gap: 0.5rem;
 }
 

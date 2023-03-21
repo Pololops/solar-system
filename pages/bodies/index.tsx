@@ -52,8 +52,6 @@ export const getStaticProps: GetStaticProps<PropsType> = async () => {
     order: ['sideralOrbit', 'asc'],
   });
 
-  if (!bodies) return { notFound: true };
-
   return {
     props: { bodies },
     revalidate: 7 * 24 * 60 * 60, // refresh data every 7 days

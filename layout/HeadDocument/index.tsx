@@ -7,7 +7,6 @@ interface Props {
 }
 
 export default function HeadDocument({ titlePage, descriptionPage, noIndexPage }: Props) {
-  console.log(noIndexPage)
   return (
     <Head>
       <title>{titlePage}</title>
