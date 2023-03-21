@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 type PropsType = {
-  body: BodyType;
+  body: SolarSystemObject;
 };
 
 export default function Card({ body }: PropsType) {

@@ -1,11 +1,7 @@
 import Query from './query';
-import Body from './body';
-import Planet from './planet';
-import Moon from './moon';
+import SolarSystemObject from './object';
 
 export default {
   Query,
-  Body,
-  Planet,
-  Moon
+  SolarSystemObject,
 };

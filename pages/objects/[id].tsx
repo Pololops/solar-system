@@ -7,7 +7,7 @@ import formatName from '@/lib/formatName';
 import Details from '@/components/Details';
 
 interface PropsType {
-  body: BodyType | string;
+  body: SolarSystemObject | string;
 }
 
 export default function Body({ body }: PropsType) {

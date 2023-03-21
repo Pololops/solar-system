@@ -1,4 +1,4 @@
-type BodyType = {
+type SolarSystemObject = {
   id: string;
   name: string;
   englishName: string;
@@ -73,12 +73,12 @@ type FilterOperators =
   | 'nbt' // not between
   ;
 
-type LoadBodiesParams = {
+type LoadObjectParams = {
   data?: string[]; // filter data to retrieve : [id,semimajorAxis,isPlanet]
   exclude?: string[]; // exclude data to retrieve : [id,semimajorAxis,isPlanet]
-  order?: [keyof BodyType, ('asc' | 'desc')]; // order by a particular data["semimajorAxis", "asc"]
+  order?: [keyof SolarSystemObject, ('asc' | 'desc')]; // order by a particular data["semimajorAxis", "asc"]
   page?: [number, number]; // page number and number of items per page : [1, 10]
   rowData?: boolean; // set to true to transform objects into records (default is false)
-  filter?: [...KeyValueType<BodyType>][]; // [["isPlanet", "eq", "true"]]
+  filter?: [...KeyValueType<SolarSystemObject>][]; // [["isPlanet", "eq", "true"]]
   satisfy?: 'all' | 'any'; // satisfy all or any filter (default is any)
 };

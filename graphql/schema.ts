@@ -2,17 +2,15 @@
 const typeDefs = `
   #### Requests
   type Query {
-    hello: String
+    "List of all objects in the solar system."
+    objects(bodyType: ObjectType): [SolarSystemObject]!
 
-    "List of all bodies in the solar system."
-    bodies(type: Type): [Body]!
-
-    "One body of the solar system."
-    body(id: String!): Body!
+    "One object of the solar system."
+    object(id: String!): SolarSystemObject
   }
 
   #### Schemas
-  interface Thing {
+  type SolarSystemObject {
     id: String!
     name: String!
     englishName: String!
@@ -23,44 +21,15 @@ const typeDefs = `
     discoveredBy: String
     discoveryDate: String
     alternativeName: String!
-    bodyType: Type!
+    bodyType: ObjectType!
+    aroundPlanet: SolarSystemObject
+    moons: [SolarSystemObject]!
   }
-
-  type Moon implements Thing {
-    id: String!
-    name: String!
-    englishName: String!
-    isPlanet: Boolean!
-    density: Float
-    gravity: Float
-    dimension: String
-    discoveredBy: String
-    discoveryDate: String
-    alternativeName: String!
-    bodyType: Type!
-    aroundPlanet: Planet!
-  }
-
-  type Planet implements Thing {
-    id: String!
-    name: String!
-    englishName: String!
-    isPlanet: Boolean!
-    density: Float
-    gravity: Float
-    dimension: String
-    discoveredBy: String
-    discoveryDate: String
-    alternativeName: String!
-    bodyType: Type!
-    moons: [Moon]!
-  }
-
-  union Body = Planet | Moon
 
   #### Enums
-  enum Type {
+  enum ObjectType {
     Planet
+    DwarfPlanet
     Moon
     Asteroid
     Star

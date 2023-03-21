@@ -11,7 +11,7 @@ import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
 
 interface PropsType {
-  bodies: BodyType[] | string;
+  bodies: SolarSystemObject[] | string;
 }
 
 export default function Bodies({ bodies }: PropsType) {
