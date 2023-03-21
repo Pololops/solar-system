@@ -26,7 +26,7 @@ class SolarAPI extends RESTDataSource {
   }
 
   async findOneById(id: string): Promise<SolarSystemObject> {
-    const object = await this.get(`${this.pathURL}/${id}`);
+    const object = await this.get(`${this.pathURL}/${encodeURIComponent(id)}`);
     return this.formatObject(object);
   }
 

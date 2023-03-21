@@ -2,7 +2,6 @@ import { Context } from '@/pages/api';
 
 export default {
   objects: async (_: any, options: any, { dataSources }: Context) => {
-    // const options = { bodyType, order };
     return dataSources.solarAPI.findAll(options);
   },
 
