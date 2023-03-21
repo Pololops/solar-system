@@ -6,6 +6,9 @@ type SolarSystemObject = {
   moons: Array<{
     moon: string,
     rel: string
+  } | {
+    name: string,
+    id: string
   }> | null;
   semimajorAxis: number;
   perihelion: number;
@@ -33,6 +36,9 @@ type SolarSystemObject = {
   aroundPlanet: {
     planet: string;
     rel: string;
+  } | {
+    name: string;
+    id: string;
   } | null;
   discoveredBy: string;
   discoveryDate: string;

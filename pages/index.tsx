@@ -21,7 +21,12 @@ export default function Home() {
           />
           <Card
             cardURL="/bodies"
-            cardTitle="Les objets"
+            cardTitle="API REST"
+            cardLegend="Les objets de notre système solaire."
+          />
+          <Card
+            cardURL="/objects"
+            cardTitle="API GraphQL"
             cardLegend="Les objets de notre système solaire."
           />
         </div>

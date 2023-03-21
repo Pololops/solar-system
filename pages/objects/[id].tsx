@@ -2,9 +2,8 @@
 
 import type { GetStaticPaths, GetStaticProps } from 'next/types';
 import { HeadDocument, MainDocument } from '@/layout';
-import { loadBodies, loadOneBody } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
-import Details from '@/components/Details';
+import Details from '@/components/DetailsQL';
 
 interface PropsType {
   body: SolarSystemObject | string;
@@ -34,24 +33,71 @@ export default function Body({ body }: PropsType) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const bodies = await loadBodies();
+  const bodies: SolarSystemObject[] = await fetch(
+    'http://localhost:3000/api/',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `
+        query SolarSystemObjectIds {
+          objects {
+            id
+          }
+        }
+      `,
+      }),
+    },
+  )
+    .then((res) => res.json())
+    .then((res) => res.data.objects);
 
-  if (!bodies || typeof bodies === 'string')
-    return { paths: [], fallback: false };
-
-  const paths = bodies.map((body) => ({
-    params: { id: body.id },
+  const paths = bodies.map(({ id }) => ({
+    params: { id },
   }));
 
   return {
     paths,
     fallback: false, // default value in case of unfound id in paths. false = 404
-    // revalidate: 7 * 24 * 60 * 60, // refresh data every 7 days
   };
 };
 
 export const getStaticProps: GetStaticProps<PropsType> = async ({ params }) => {
-  const body = await loadOneBody(params?.id as string);
+  const body: SolarSystemObject = await fetch('http://localhost:3001/api/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        query SolarSystemObject($objectId: String!) {
+          object(id: $objectId) {
+            id
+            name
+            isPlanet
+            bodyType
+            dimension
+            density
+            gravity
+            discoveryDate
+            discoveredBy
+            englishName
+            aroundPlanet {
+              id
+              name
+            }
+            moons {
+              id
+              name
+            }
+          }
+        }
+      `,
+      variables: {
+        objectId: params?.id,
+      },
+    }),
+  })
+    .then((res) => res.json())
+    .then((res) => res.data.object);
 
   if (!body) {
     return {

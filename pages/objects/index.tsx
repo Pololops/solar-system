@@ -1,13 +1,11 @@
 // Description: all bodies in the solar system - /bodies
 
 import type { GetStaticProps } from 'next/types';
-
 import { useRouter } from 'next/router';
-
 import { HeadDocument, MainDocument } from '@/layout';
 import { Card } from '@/components';
 
-import { loadBodies } from '@/lib/loadData';
+// import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
 
 interface PropsType {
@@ -46,11 +44,30 @@ export default function Bodies({ bodies }: PropsType) {
   );
 }
 
-export const getStaticProps: GetStaticProps<PropsType> = async () => {
-  const bodies = await loadBodies({
-    filter: [['bodyType', 'cs', 'Planet']],
-    order: ['sideralOrbit', 'asc'],
-  });
+export const getStaticProps: GetStaticProps<PropsType> = async (context) => {
+  const bodies: SolarSystemObject[] = await fetch(
+    'http://localhost:3001/api/',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `
+        query SolarSystemObjects($bodyType: ObjectType) {
+          objects(bodyType: $bodyType) {
+            id
+            name
+            englishName
+          }
+        }
+      `,
+        variables: {
+          bodyType: 'Planet',
+        },
+      }),
+    },
+  )
+    .then((res) => res.json())
+    .then((res) => res.data.objects);
 
   return {
     props: { bodies },

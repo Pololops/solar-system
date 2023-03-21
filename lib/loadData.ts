@@ -6,7 +6,7 @@ const oneBodyUrl = (id: string) => `https://api.le-systeme-solaire.net/rest/bodi
 const parseParams = (params?: LoadObjectParams): string => {
   if (!params) return '';
 
-  const queries = SolarSystemObject.entries(params).map(([key, value]) => {
+  const queries = Object.entries(params).map(([key, value]) => {
     const stringifyValue = Array.isArray(value) ? value.join(',') : value
     return `${key}=${stringifyValue}`;
   });

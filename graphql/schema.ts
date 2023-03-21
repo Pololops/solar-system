@@ -21,7 +21,7 @@ const typeDefs = `
     discoveredBy: String
     discoveryDate: String
     alternativeName: String!
-    bodyType: ObjectType!
+    bodyType: String!
     aroundPlanet: SolarSystemObject
     moons: [SolarSystemObject]!
   }
