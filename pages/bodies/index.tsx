@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { HeadDocument, MainDocument } from '@/layout';
 import { Card } from '@/components';
 
-import { loadBodies } from '@/lib/loadData';
+import { loadBodies } from '@/lib/loadDataFromRestAPI';
 import formatName from '@/lib/formatName';
 
 interface PropsType {

@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { HeadDocument, MainDocument } from '@/layout';
 import { Card } from '@/components';
 
-// import { loadBodies } from '@/lib/loadData';
 import formatName from '@/lib/formatName';
+import loadData from '@/lib/loadDataFromGraphQLAPI';
 
 interface PropsType {
   bodies: SolarSystemObject[] | string;
@@ -44,31 +44,11 @@ export default function Bodies({ bodies }: PropsType) {
   );
 }
 
-export const getStaticProps: GetStaticProps<PropsType> = async (context) => {
-  const bodies: SolarSystemObject[] = await fetch(
-    'http://localhost:3001/api/',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-        query SolarSystemObjects($order: Order, $bodyType: ObjectType) {
-          objects(order: $order, bodyType: $bodyType) {
-            id
-            name
-            englishName
-          }
-        }
-      `,
-        variables: {
-          bodyType: 'Planet',
-          order: 'ASC'
-        },
-      }),
-    },
-  )
-    .then((res) => res.json())
-    .then((res) => res.data.objects);
+export const getStaticProps: GetStaticProps<PropsType> = async () => {
+  const bodies = await loadData('objects', {
+    bodyType: 'Planet',
+    order: 'ASC',
+  });
 
   return {
     props: { bodies },

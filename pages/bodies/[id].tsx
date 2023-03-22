@@ -2,7 +2,7 @@
 
 import type { GetStaticPaths, GetStaticProps } from 'next/types';
 import { HeadDocument, MainDocument } from '@/layout';
-import { loadBodies, loadOneBody } from '@/lib/loadData';
+import { loadBodies, loadOneBody } from '@/lib/loadDataFromRestAPI';
 import formatName from '@/lib/formatName';
 import Details from '@/components/Details';
 
