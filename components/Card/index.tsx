@@ -3,12 +3,12 @@ import Image from 'next/image';
 
 import styles from './styles.module.css';
 
-type Props = {
+export type Props = {
   cardURL: string;
   cardTitle: string;
   cardLegend: string;
   cardImage?: string;
-  CardImageAlt?: string;
+  cardImageAlt?: string;
 };
 
 export default function Card({
@@ -16,7 +16,7 @@ export default function Card({
   cardTitle,
   cardLegend,
   cardImage,
-  CardImageAlt,
+  cardImageAlt,
 }: Props) {
   return (
     <Link href={cardURL} className={styles.card}>
@@ -24,7 +24,7 @@ export default function Card({
         {cardTitle} {!cardImage && <span>-&gt;</span>}
       </h2>
       {cardImage && (
-        <Image src={cardImage} alt={CardImageAlt || ''} fill={true} />
+        <Image src={cardImage} alt={cardImageAlt || ''} fill={true} />
       )}
       <p>{cardLegend}</p>
     </Link>
