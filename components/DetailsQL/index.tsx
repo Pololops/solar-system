@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 type PropsType = {
-  body: SolarSystemObject;
+  body: SolarSystemObjectGraphQLAPI;
 };
 
 export default function Card({ body }: PropsType) {
@@ -43,24 +43,28 @@ export default function Card({ body }: PropsType) {
     <>
       {body.bodyType && <p>Type : {getType()}</p>}
 
-      {body.isPlanet && body.moons && (
-        <p>
-          Satellite(s) :{' '}
-          {body.moons.length === 0
-            ? ' Aucun'
-            : body.moons.map((moon, index, array) => 
-                'id' in moon && (
-                  <>
-                    <Link key={moon.id} href={`${encodeURIComponent(moon.id)}`}>
-                      {moon.name}
-                    </Link>
-                    {index !== array.length - 1 && ' - '}
-                  </>
-                )
-              )
-          }
-        </p>
-      )}
+      {body.bodyType === 'Planet' ||
+        (body.bodyType === 'Dwarf Planet' && body.moons && (
+          <p>
+            Satellite(s) :{' '}
+            {body.moons.length === 0
+              ? ' Aucun'
+              : body.moons.map(
+                  (moon, index, array) =>
+                    'id' in moon && (
+                      <>
+                        <Link
+                          key={moon.id}
+                          href={`${encodeURIComponent(moon.id)}`}
+                        >
+                          {moon.name}
+                        </Link>
+                        {index !== array.length - 1 && ' - '}
+                      </>
+                    ),
+                )}
+          </p>
+        ))}
 
       {body.aroundPlanet && 'id' in body.aroundPlanet && (
         <p>
@@ -78,7 +82,7 @@ export default function Card({ body }: PropsType) {
       {!!body.dimension && <p>{`Dimension : ${body.dimension}`}</p>}
 
       {body.discoveryDate && <p>{`Découvert le : ${getDiscoveryDate()}`}</p>}
-      
+
       {body.discoveredBy && <p>Découvert par : {body.discoveredBy}</p>}
     </>
   );

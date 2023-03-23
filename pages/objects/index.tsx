@@ -9,7 +9,7 @@ import formatName from '@/lib/formatName';
 import loadData from '@/lib/loadDataFromGraphQLAPI';
 
 interface PropsType {
-  bodies: SolarSystemObject[] | string;
+  bodies: SolarSystemObjectGraphQLAPI[] | string;
 }
 
 export default function Bodies({ bodies }: PropsType) {
@@ -46,9 +46,9 @@ export default function Bodies({ bodies }: PropsType) {
 
 export const getStaticProps: GetStaticProps<PropsType> = async () => {
   const bodies = await loadData('objects', {
-    bodyType: 'Planet',
+    bodyType: ['Planet', 'DwarfPlanet'],
     order: 'ASC',
-  });
+  }) as SolarSystemObjectGraphQLAPI[] | string;
 
   return {
     props: { bodies },

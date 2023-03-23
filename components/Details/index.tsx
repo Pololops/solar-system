@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 type PropsType = {
-  body: SolarSystemObject;
+  body: SolarSystemObjectRestApi;
 };
 
 export default function Card({ body }: PropsType) {
@@ -58,6 +58,7 @@ export default function Card({ body }: PropsType) {
   return (
     <>
       {body.bodyType && <p>Type : {getType()}</p>}
+
       {body.moons && (
         <p>
           Satellite(s) :{' '}
@@ -73,6 +74,7 @@ export default function Card({ body }: PropsType) {
               ))}
         </p>
       )}
+
       {aroundPlanetId && (
         <p>
           Planète proche :{' '}
@@ -81,12 +83,17 @@ export default function Card({ body }: PropsType) {
           </Link>
         </p>
       )}
+
       {!!body.density && <p>{`Densité : ${body.density}`}</p>}
+
       {!!body.gravity && <p>{`Gravité : ${body.gravity}`}</p>}
+
       {!!body.dimension && <p>{`Dimension : ${body.dimension}`}</p>}
+
       {getDiscoveryDate !== null && (
         <p>{`Découvert le : ${getDiscoveryDate()}`}</p>
       )}
+      
       {body.discoveredBy && <p>Découvert par : {body.discoveredBy}</p>}
     </>
   );

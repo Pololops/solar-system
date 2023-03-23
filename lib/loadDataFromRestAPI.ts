@@ -1,7 +1,4 @@
-// API website : https://api.le-systeme-solaire.net
-
-const allBodiesUrl = `https://api.le-systeme-solaire.net/rest/bodies/`;
-const oneBodyUrl = (id: string) => `https://api.le-systeme-solaire.net/rest/bodies/${id}`;
+const allBodiesUrl = process.env.REST_API_ENDPOINT!;
 
 const parseParams = (params?: LoadObjectParams): string => {
   if (!params) return '';
@@ -14,16 +11,17 @@ const parseParams = (params?: LoadObjectParams): string => {
   return '?' + queries.join('&');
 };
 
-export const loadBodies = async (params?: LoadObjectParams): Promise<SolarSystemObject[] | string> => {
+export const loadBodies = async (params?: LoadObjectParams): Promise<SolarSystemObjectRestApi[] | string> => {
   try {
-    const url = `${allBodiesUrl}${parseParams(params)}`;
+    const url = params ? `${allBodiesUrl}/${parseParams(params)}` : allBodiesUrl;
+    console.log(url);
 
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch data from API, received status ${response.status}`)
     }
 
-    const data = await response.json() as { bodies: SolarSystemObject[] } | undefined;
+    const data = await response.json() as { bodies: SolarSystemObjectRestApi[] } | undefined;
     if (!data || !('bodies' in data)) {
       throw new Error(`Invalid data structures received from API`)
     }
@@ -34,9 +32,11 @@ export const loadBodies = async (params?: LoadObjectParams): Promise<SolarSystem
   }
 }
 
-export const loadOneBody = async (id: string): Promise<SolarSystemObject | string> => {
+export const loadOneBody = async (id: string): Promise<SolarSystemObjectRestApi | string> => {
   try {
-    const response = await fetch(oneBodyUrl(id));
+    const url = `${allBodiesUrl}/${id}`;
+
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch data from API, received status ${response.status}`)
     }

@@ -1,4 +1,4 @@
-type SolarSystemObject = {
+type SolarSystemObjectRestApi = {
   id: string;
   name: string;
   englishName: string;
@@ -6,9 +6,6 @@ type SolarSystemObject = {
   moons: Array<{
     moon: string,
     rel: string
-  } | {
-    name: string,
-    id: string
   }> | null;
   semimajorAxis: number;
   perihelion: number;
@@ -36,9 +33,6 @@ type SolarSystemObject = {
   aroundPlanet: {
     planet: string;
     rel: string;
-  } | {
-    name: string;
-    id: string;
   } | null;
   discoveredBy: string;
   discoveryDate: string;
@@ -51,6 +45,18 @@ type SolarSystemObject = {
   bodyType: 'Star' | 'Planet' | 'Dwarf Planet' | 'Asteroid' | 'Comet' | 'Moon';
   rel: string;
 };
+
+type SolarSystemObjectGraphQLAPI = { [key in keyof Omit<SolarSystemObjectRestApi, 'moons' | 'aroundPlanet'>]: SolarSystemObjectRestApi[key] } & {
+  moons: Array<{
+    id: string;
+    name: string;
+  }> | null;
+  aroundPlanet: {
+    id: string;
+    name: string;
+  } | null;
+};
+
 
 type KeyValueType<T> = {
   [key in keyof T]: T[key] extends (string | number | boolean)

@@ -3,11 +3,12 @@
 import type { GetStaticPaths, GetStaticProps } from 'next/types';
 import { HeadDocument, MainDocument } from '@/layout';
 import { loadBodies, loadOneBody } from '@/lib/loadDataFromRestAPI';
+
 import formatName from '@/lib/formatName';
 import Details from '@/components/Details';
 
 interface PropsType {
-  body: SolarSystemObject | string;
+  body: SolarSystemObjectRestApi | string;
 }
 
 export default function Body({ body }: PropsType) {
@@ -46,7 +47,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths,
     fallback: false, // default value in case of unfound id in paths. false = 404
-    // revalidate: 7 * 24 * 60 * 60, // refresh data every 7 days
   };
 };
 

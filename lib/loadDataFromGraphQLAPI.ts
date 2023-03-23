@@ -1,38 +1,33 @@
-// API website : https://api.le-systeme-solaire.net
-
 import { gql } from '@apollo/client';
 import client from './../apolloClient';
 
 type QueryType = 'ids' | 'objects' | 'object';
-type ReturnData<K> = K extends 'ids' | 'objects' ? SolarSystemObject[] : K extends 'object' ? SolarSystemObject : never;
-type Data<K> = {
-  data: {
-    [key in QueryType]: ReturnData<K>
-  }
-}
+type Data<K> = { data: { [key in QueryType]: ReturnData<K> } };
+type ReturnData<K> = K extends 'ids' | 'objects' ? SolarSystemObjectGraphQLAPI[] : K extends 'object' ? SolarSystemObjectGraphQLAPI : never;
 
 
 type Query = { [key in QueryType]: string };
 
+type ObjectType = 'Planet' | 'DwarfPlanet' | 'Moon' | 'Asteroid' | 'Comet' | 'Star'
 type QueryObjectsOptions = {
-  bodyType?: 'Planet' | 'DwarfPlanet' | 'Moon' | 'Asteroid' | 'Comet' | 'Star'
+  bodyType?: ObjectType | ObjectType[]
   order?: 'ASC' | 'DESC',
 };
 type QueryObjectOptions = {
   objectId: string,
 }
-type QueryOptions<T extends QueryType> = (T extends 'objects' ? QueryObjectsOptions | undefined : QueryObjectOptions);
+type QueryOptions<T extends QueryType> = (T extends 'objects' ? QueryObjectsOptions : QueryObjectOptions);
 
 const queries: Query = {
   ids: `
-    query SolarSystemIds() {
-      objects() {
+    query SolarSystemIds {
+      objects {
         id
       }
     }
   `,
   objects: `
-    query SolarSystemObjects($order: Order, $bodyType: ObjectType) {
+    query SolarSystemObjects($order: Order, $bodyType: [ObjectType]) {
       objects(order: $order, bodyType: $bodyType) {
         id
         name
@@ -67,7 +62,7 @@ const queries: Query = {
   `,
 };
 
-export default async (queryType: QueryType, options: QueryOptions<QueryType>) => {
+export default async (queryType: QueryType, options?: QueryOptions<QueryType>): Promise<ReturnData<QueryType> | string> => {
   try {
     const query = queries[queryType];
 
@@ -76,7 +71,7 @@ export default async (queryType: QueryType, options: QueryOptions<QueryType>) =>
       variables: options,
     }) as Data<QueryType>;
 
-    return data[queryType];
+    return queryType === 'ids' ? data.objects : data[queryType];
   }
   catch (error) {
     return 'Internal error';

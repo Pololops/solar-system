@@ -7,7 +7,7 @@ import formatName from '@/lib/formatName';
 import Details from '@/components/DetailsQL';
 
 interface PropsType {
-  body: SolarSystemObject | string;
+  body: SolarSystemObjectGraphQLAPI | string;
 }
 
 export default function Body({ body }: PropsType) {
@@ -36,7 +36,7 @@ export default function Body({ body }: PropsType) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const bodies = await loadData('ids');
 
-  if (!bodies || typeof bodies === 'string')
+  if (!bodies || typeof bodies === 'string' || !Array.isArray(bodies))
     return { paths: [], fallback: false };
 
   const paths = bodies.map((body) => ({
@@ -51,9 +51,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<PropsType> = async ({ params }) => {
-  const body = await loadData('object', {
-    objectId: params?.id,
-  });
+  const id = params!.id as string;
+  const body = (await loadData('object', {
+    objectId: id,
+  })) as SolarSystemObjectGraphQLAPI;
 
   if (!body) {
     return {
