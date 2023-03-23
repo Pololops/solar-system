@@ -43,8 +43,8 @@ export default function Card({ body }: PropsType) {
     <>
       {body.bodyType && <p>Type : {getType()}</p>}
 
-      {body.bodyType === 'Planet' ||
-        (body.bodyType === 'Dwarf Planet' && body.moons && (
+      {(body.bodyType === 'Planet' || body.bodyType === 'Dwarf Planet') &&
+        body.moons && (
           <p>
             Satellite(s) :{' '}
             {body.moons.length === 0
@@ -64,7 +64,7 @@ export default function Card({ body }: PropsType) {
                     ),
                 )}
           </p>
-        ))}
+        )}
 
       {body.aroundPlanet && 'id' in body.aroundPlanet && (
         <p>
