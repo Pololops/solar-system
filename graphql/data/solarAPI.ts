@@ -1,22 +1,21 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
+import type { KeyValueCache } from '@apollo/utils.keyvaluecache';
 
-const TTL = 7 * 24 * 60 * 60; // 1 minute
+const TTL = 7 * 24 * 60 * 60; // 7 jours
 
 class SolarAPI extends RESTDataSource {
   override baseURL = 'https://api.le-systeme-solaire.net';
   pathURL = '/rest/bodies';
 
-  // protected override requestDeduplicationPolicyFor() {
-  //   return {
-  //     policy: 'do-not-deduplicate',
-  //   } as const;
-  // }
+  constructor(options: { cache: KeyValueCache }) {
+    super(options);
+  }
 
-  // override cacheOptionsFor() {
-  //   return {
-  //     ttl: TTL,
-  //   }
-  // }
+  override cacheOptionsFor() {
+    return {
+      ttl: TTL,
+    }
+  }
 
   async findAll(args?: { [key: string]: string[] | string }): Promise<SolarSystemObjectGraphQLAPI[]> {
     const queryString = !!args ? this.formatFilterQuery(args) : '';

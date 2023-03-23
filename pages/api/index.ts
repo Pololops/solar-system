@@ -22,7 +22,7 @@ export default startServerAndCreateNextHandler(server, {
     const { cache } = server;
     return {
       dataSources: {
-        solarAPI: new SolarAPI(),
+        solarAPI: new SolarAPI({ cache }),
       },
     }
   },
