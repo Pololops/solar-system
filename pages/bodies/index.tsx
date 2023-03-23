@@ -36,7 +36,7 @@ export default function Bodies({ bodies }: PropsType) {
                 cardTitle={formatName(body.name)}
                 cardLegend={body.englishName}
                 cardImage="/favicon.ico"
-                CardImageAlt={body.name}
+                cardImageAlt={body.name}
               />
             ))
           )}
