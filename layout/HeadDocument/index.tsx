@@ -10,7 +10,10 @@ export default function HeadDocument({ titlePage, descriptionPage, noIndexPage }
   return (
     <Head>
       <title>{titlePage}</title>
-      <meta name="description" content={descriptionPage} />
+      <meta
+        name="description"
+        content={descriptionPage}
+      />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/favicon.ico" />
       {noIndexPage && <meta name="robots" content="noindex" />}

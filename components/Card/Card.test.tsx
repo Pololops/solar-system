@@ -1,4 +1,3 @@
-// write a test file with testing-library
 import { screen, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -15,7 +14,7 @@ const props = {
 // mock next/image component to test src and alt with Card's props
 jest.mock('next/image', () => {
   return (props: any) => {
-    return <img {...props} />;
+    return <img {...props} fill="true" />;
   };
 });
 
@@ -28,9 +27,7 @@ jest.mock('next/link', () => {
 
 
 beforeEach(() => {
-  render(
-    <Card {...props} />,
-  );
+  render(<Card {...props} />);
 });
 
 describe('Card component', () => {
