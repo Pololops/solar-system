@@ -14,7 +14,6 @@ const parseParams = (params?: LoadObjectParams): string => {
 export const loadBodies = async (params?: LoadObjectParams): Promise<SolarSystemObjectRestApi[] | string> => {
   try {
     const url = params ? `${allBodiesUrl}/${parseParams(params)}` : allBodiesUrl;
-    console.log(url);
 
     const response = await fetch(url);
     if (!response.ok) {

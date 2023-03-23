@@ -19,7 +19,6 @@ class SolarAPI extends RESTDataSource {
 
   async findAll(args?: { [key: string]: string[] | string }): Promise<SolarSystemObjectGraphQLAPI[]> {
     const queryString = !!args ? this.formatFilterQuery(args) : '';
-    console.log(queryString)
     const { bodies } = await this.get(`${this.pathURL}${queryString}`) as { bodies: SolarSystemObjectGraphQLAPI[] };
 
     return bodies.map((object) => this.formatObject(object));
