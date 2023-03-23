@@ -7,7 +7,7 @@ import type { Props } from './';
 // mock next/image component to test src and alt with Card's props
 jest.mock('next/image', () => {
   return (props: any) => {
-    return <img {...props} fill={true} />;
+    return <img {...props} fill="true" />;
   };
 });
 
@@ -70,7 +70,6 @@ describe('Image in Card component', () => {
     const { getByRole } = render(<Card {...props} />);
     const image = getByRole('img');
 
-    console.log(image);
     expect(image).toHaveAttribute('src', props.cardImage);
     expect(image).toHaveAttribute('alt', props.cardImageAlt);
   });

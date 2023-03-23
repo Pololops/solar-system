@@ -4,11 +4,8 @@ import '@testing-library/jest-dom';
 import HeadDocument from './';
 
 jest.mock('next/head', () => {
-  return {
-    __esModule: true,
-    default: ({ children }: { children: Array<React.ReactElement> }) => {
-      return <>{children}</>;
-    },
+  return ({ children }: { children: Array<React.ReactElement> }) => {
+    return <>{children}</>;
   };
 });
 
@@ -44,7 +41,7 @@ describe('HeadDocument component index by robots', () => {
     expect(description).toBe('Test Description');
   });
 
-  it('shouldn\'t have a robots meta', () => {
+  it("shouldn't have a robots meta", () => {
     render(<HeadDocument titlePage={''} descriptionPage={''} />);
     const description = getMeta('robots');
     expect(description).not.toBeDefined();
